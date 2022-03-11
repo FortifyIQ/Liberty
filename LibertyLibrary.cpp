@@ -38,7 +38,7 @@ Cell::~Cell()
 std::string Cell::name() const
 {
     Impl* this__ = this_.get();
-    return this__->group->name;
+    return this__->group->names[0];
 }
 
 ast::Visitor::result_type ast::Visitor::operator()(const ast::GroupStatementAst& group) const
@@ -60,11 +60,6 @@ ast::Visitor::result_type ast::Visitor::operator()(const ast::SimpleAttribute&) 
 }
 
 ast::Visitor::result_type ast::Visitor::operator()(const ast::ComplexAttribute&) const
-{
-
-}
-
-ast::Visitor::result_type ast::Visitor::operator()(const ast::DefineStatement&) const
 {
 
 }

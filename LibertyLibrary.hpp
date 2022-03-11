@@ -46,23 +46,9 @@ struct ComplexAttribute
     std::vector<SimpleAttribute::Value> values;
 };
 
-enum class AttributeType {
-    String,
-    Boolean,
-    Integer,
-    FloatingPoint
-};
-
-struct DefineStatement
-{
-    std::string attribute_name;
-    std::string group_name;
-    AttributeType attribute_type;
-};
-
 struct GroupStatement;
 using GroupStatementAst = boost::spirit::x3::forward_ast<GroupStatement>;
-struct AttributeStatement : boost::spirit::x3::variant<DefineStatement, SimpleAttribute, ComplexAttribute, GroupStatementAst>
+struct AttributeStatement : boost::spirit::x3::variant<SimpleAttribute, ComplexAttribute, GroupStatementAst>
 {
     using base_type::base_type;
     using base_type::operator=;
@@ -71,7 +57,7 @@ struct AttributeStatement : boost::spirit::x3::variant<DefineStatement, SimpleAt
 struct GroupStatement
 {
     std::string group_name;
-    std::string name;
+    std::vector<std::string> names;
     std::vector<AttributeStatement> children;
 };
 
@@ -83,7 +69,6 @@ public:
     result_type operator()(const ast::GroupStatementAst& group) const;
     result_type operator()(const ast::SimpleAttribute& attr) const;
     result_type operator()(const ast::ComplexAttribute&) const;
-    result_type operator()(const ast::DefineStatement&) const;
 
     void onCell(std::function<void(const Cell&)>&& callback);
 private:
